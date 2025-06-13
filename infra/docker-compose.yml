@@ -21,7 +21,7 @@ services:
     image: postgres:16-alpine
     restart: always
     env_file:
-      - .env.db
+      - .env
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
@@ -34,7 +34,7 @@ services:
       - "9000:9000"  # S3 API
       - "9001:9001"  # Web Console
     env_file:
-      - .env.s3
+      - .env
     volumes:
       - minio_data:/data
     command: server /data --console-address ":9001"
