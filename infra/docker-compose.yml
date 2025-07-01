@@ -44,8 +44,6 @@ services:
     build: ../backend
     env_file: 
       - .env
-    ports:
-      - "8001:8000"
     volumes:
       - static:/backend_static
 
