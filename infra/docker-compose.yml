@@ -31,15 +31,23 @@ services:
     image: quay.io/minio/minio
     container_name: minio
     ports:
-      - "9000:9000"  # S3 API
-      - "9001:9001"  # Web Console
+      - "9000:9000"
+      - "9001:9001" 
     env_file:
       - .env
     volumes:
       - minio_data:/data
     command: server /data --console-address ":9001"
 
+  backend:
+    container_name: foodgram-back
+    build: ../backend
+    env_file: 
+      - .env
+    volumes:
+      - static:/backend_static
 
 volumes:
   postgres_data: {}
   minio_data: {}
+  static: {}
