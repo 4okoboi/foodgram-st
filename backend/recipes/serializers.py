@@ -10,7 +10,6 @@ class IngredientSerializer(serializers.ModelSerializer):
 
 
 class IngredientInRecipeSerializer(serializers.ModelSerializer):
-    id = serializers.ReadOnlyField(source='ingredient.id')
     name = serializers.ReadOnlyField(source='ingredient.name')
     measurement_unit = serializers.ReadOnlyField(source='ingredient.measurement_unit')
     amount = serializers.IntegerField(
@@ -58,9 +57,13 @@ class RecipeListSerializer(serializers.ModelSerializer):
         return False
 
 
+class IngredientAmountSerializer(serializers.Serializer):
+    id = serializers.IntegerField(required=True)
+    amount = serializers.IntegerField(min_value=1, required=True)
+
 
 class RecipeCreateSerializer(serializers.ModelSerializer):
-    ingredients = IngredientInRecipeSerializer(
+    ingredients = IngredientAmountSerializer(
         required=True,
         allow_null=False,
         min_length=1,
