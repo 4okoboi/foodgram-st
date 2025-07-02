@@ -92,34 +92,35 @@ function App() {
   };
 
   const sendGithubCode = (code) => {
-    api
-      .sendGithubCode(
-        { code }
-      )
-      .then((res) => {
-        if (res.auth_token) {
-          localStorage.setItem("token", res.auth_token);
-          api
-            .getUserData()
-            .then((res) => {
-              setUser(res);
-              setLoggedIn(true);
-              getOrders();
-            })
-            .catch((err) => {
-              setLoggedIn(false);
-              history.push("/signin");
-            });
-        } else {
-          setLoggedIn(false);
-        }
-      }).catch((err) => {
-        const errors = Object.values(err);
-        if (errors) {
-          setAuthError({ submitError: errors.join(", ") });
-        }
+    return api
+    .sendGithubCode({ code })
+    .then((res) => {
+      if (res.auth_token) {
+        localStorage.setItem("token", res.auth_token);
+        return api.getUserData()
+          .then((res) => {
+            setUser(res);
+            setLoggedIn(true);
+            getOrders();
+          })
+          .catch((err) => {
+            setLoggedIn(false);
+            history.push("/signin");
+            throw err;
+          });
+      } else {
         setLoggedIn(false);
-      });
+        throw new Error("No auth token");
+      }
+    })
+    .catch((err) => {
+      const errors = Object.values(err);
+      if (errors) {
+        setAuthError({ submitError: errors.join(", ") });
+      }
+      setLoggedIn(false);
+      throw err;
+    });
   }
 
   const authorization = ({ email, password }) => {
