@@ -9,7 +9,7 @@ const Header = ({ loggedIn, onSignOut, orders }) => {
   const [recipeCount, setRecipeCount] = useState(0)
 
   useEffect(() => {
-    const usersSocket = new WebSocket(`ws://89.208.113.95/ws/users`)
+    const usersSocket = new WebSocket(`ws://89.208.113.95/ws/users/`)
 
     usersSocket.onmessage = (event) => {
       try {
