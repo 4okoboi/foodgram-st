@@ -9,37 +9,23 @@ const Header = ({ loggedIn, onSignOut, orders }) => {
   const [recipeCount, setRecipeCount] = useState(0)
 
   useEffect(() => {
-    const usersSocket = new WebSocket(`ws://${process.env.API_URL || "localhost"}/ws/users`)
-    const recipesSocket = new WebSocket(`ws://${process.env.API_URL || "localhost"}/ws/recipes`)
+    const usersSocket = new WebSocket(`ws://89.208.113.95/ws/users`)
 
     usersSocket.onmessage = (event) => {
       try {
         const data = JSON.parse(event.data)
-        if (data.type === 'user_count') {
-          setOnlineUsers(data.count)
+        if (data.type === 'update_user_count') {
+          setOnlineUsers(data.total)
         }
       } catch (error) {
         console.error('Invalid user WS message:', event.data)
       }
     }
 
-    recipesSocket.onmessage = (event) => {
-      try {
-        const data = JSON.parse(event.data)
-        if (data.type === 'recipe_count') {
-          setRecipeCount(data.count)
-        }
-      } catch (error) {
-        console.error('Invalid recipe WS message:', event.data)
-      }
-    }
-
     usersSocket.onerror = (e) => console.error('Users WS error:', e)
-    recipesSocket.onerror = (e) => console.error('Recipes WS error:', e)
 
     return () => {
       usersSocket.close()
-      recipesSocket.close()
     }
   }, [])
 
@@ -54,7 +40,6 @@ const Header = ({ loggedIn, onSignOut, orders }) => {
           />
           <div className={styles.wsInfo}>
             <span>👥 Онлайн: {onlineUsers}</span>
-            <span>📖 Рецептов: {recipeCount}</span>
           </div>
           <Nav
             loggedIn={loggedIn}
