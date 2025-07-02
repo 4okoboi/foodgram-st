@@ -1,3 +1,4 @@
+import uuid
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
 from rest_framework import generics, status
@@ -12,11 +13,11 @@ from .serializers import UserCreateSerializer, SetAvatarSerializer, SetPasswordS
 from .serializers import (
     UserSerializer
 )
+from django.core.mail import send_mail
 from .serializers import UsersRecipesSerializer
 from rest_framework.authtoken.models import Token
 import requests
-
-
+from rest_framework.decorators import api_view, permission_classes
 
 
 class CustomUserListCreateView(generics.ListCreateAPIView):
@@ -165,3 +166,33 @@ class GitHubOAuthTokenLoginView(APIView):
         return Response({
             "auth_token": token.key
         })
+
+
+def generate_password():
+    return str(uuid.uuid4())
+
+@api_view(['POST'])
+def reset_password_and_send_new(request):
+    email = request.data.get('email')
+    if not email:
+        return Response({'error': 'Email is required'}, status=status.HTTP_400_BAD_REQUEST)
+
+    try:
+        user = User.objects.get(email=email)
+    except User.DoesNotExist:
+        return Response({'error': 'User with this email does not exist'}, status=status.HTTP_404_NOT_FOUND)
+
+    new_password = generate_password()
+
+    user.set_password(new_password)
+    user.save()
+
+    send_mail(
+        subject='Ваш новый пароль',
+        message=f'Здравствуйте, ваш новый пароль: {new_password}\nПожалуйста, смените его после входа.',
+        from_email='zakiroffkam@gmail.com',
+        recipient_list=[email],
+        fail_silently=False,
+    )
+
+    return Response({'detail': 'Новый пароль отправлен на email'}, status=status.HTTP_200_OK)

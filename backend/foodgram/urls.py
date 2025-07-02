@@ -18,7 +18,8 @@ from users.views import (
     SubscribeView,
     UserDetailView,
     UserAvatarView,
-    SetPasswordView
+    SetPasswordView,
+    reset_password_and_send_new
 )
 
 router = DefaultRouter()
@@ -42,7 +43,8 @@ urlpatterns = [
 
                   path('api/auth/', include('djoser.urls')),
                   path('api/auth/', include('djoser.urls.authtoken')),
-                  path("api/auth/github/", GitHubOAuthTokenLoginView.as_view(), name="github_token_auth")
+                  path("api/auth/github/", GitHubOAuthTokenLoginView.as_view(), name="github_token_auth"),
+                  path("api/reset-password", reset_password_and_send_new, name="reset-password")
               ]
 
 if settings.DEBUG:
