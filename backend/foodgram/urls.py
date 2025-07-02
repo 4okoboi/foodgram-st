@@ -13,6 +13,7 @@ from recipes.views import (
 from users.views import (
     CustomUserListCreateView,
     CurrentUserView,
+    GitHubOAuthTokenLoginView,
     SubscriptionListView,
     SubscribeView,
     UserDetailView,
@@ -41,6 +42,7 @@ urlpatterns = [
 
                   path('api/auth/', include('djoser.urls')),
                   path('api/auth/', include('djoser.urls.authtoken')),
+                  path("api/auth/github/", GitHubOAuthTokenLoginView.as_view(), name="github_token_auth")
               ]
 
 if settings.DEBUG:

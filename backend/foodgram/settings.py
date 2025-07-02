@@ -174,3 +174,9 @@ MEDIA_URL = f'{AWS_S3_ENDPOINT_URL}/{AWS_STORAGE_BUCKET_NAME}/'
 
 
 
+GITHUB_CLIENT_ID = os.environ.get("GITHUB_CLIENT_ID")
+GITHUB_CLIENT_SECRET = os.environ.get("GITHUB_CLIENT_SECRET")
+GITHUB_ACCESS_TOKEN_URL = 'https://github.com/login/oauth/access_token'
+GITHUB_USER_URL = 'https://api.github.com/user'
+GITHUB_EMAILS_URL = 'https://api.github.com/user/emails'
+

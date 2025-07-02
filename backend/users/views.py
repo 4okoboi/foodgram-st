@@ -6,12 +6,17 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from django.conf import settings
 from .models import User, Subscription
 from .serializers import UserCreateSerializer, SetAvatarSerializer, SetPasswordSerializer
 from .serializers import (
     UserSerializer
 )
 from .serializers import UsersRecipesSerializer
+from rest_framework.authtoken.models import Token
+import requests
+
+
 
 
 class CustomUserListCreateView(generics.ListCreateAPIView):
@@ -103,3 +108,56 @@ class SetPasswordView(APIView):
             user.save()
             return Response(status=status.HTTP_204_NO_CONTENT)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+User = get_user_model()
+
+class GitHubOAuthTokenLoginView(APIView):
+    def post(self, request):
+        code = request.data.get("code")
+        if not code:
+            return Response({"error": "Code not provided"}, status=400)
+
+        token_resp = requests.post(
+            "https://github.com/login/oauth/access_token",
+            headers={"Accept": "application/json"},
+            data={
+                "client_id": settings.GITHUB_CLIENT_ID,
+                "client_secret": settings.GITHUB_CLIENT_SECRET,
+                "code": code,
+            },
+        )
+        token_json = token_resp.json()
+        access_token = token_json.get("access_token")
+
+        if not access_token:
+            return Response({"error": "Invalid GitHub code"}, status=400)
+
+        user_resp = requests.get(
+            "https://api.github.com/user",
+            headers={"Authorization": f"token {access_token}"},
+        )
+        user_data = user_resp.json()
+
+        email = user_data.get("email")
+
+        if not email:
+            email_resp = requests.get(
+                "https://api.github.com/user/emails",
+                headers={"Authorization": f"token {access_token}"},
+            )
+            emails = email_resp.json()
+            email = next((e["email"] for e in emails if e.get("primary")), None)
+
+        if not email:
+            return Response({"error": "Email not found"}, status=400)
+
+        user, created = User.objects.get_or_create(email=email, defaults={
+            "username": email.split("@")[0]
+        })
+
+        # Получаем или создаём токен
+        token, _ = Token.objects.get_or_create(user=user)
+
+        return Response({
+            "auth_token": token.key
+        })
