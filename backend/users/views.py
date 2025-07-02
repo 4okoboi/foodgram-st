@@ -172,6 +172,7 @@ def generate_password():
     return str(uuid.uuid4())
 
 @api_view(['POST'])
+@permission_classes([AllowAny])
 def reset_password_and_send_new(request):
     email = request.data.get('email')
     if not email:
