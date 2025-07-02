@@ -187,7 +187,7 @@ GITHUB_ACCESS_TOKEN_URL = 'https://github.com/login/oauth/access_token'
 GITHUB_USER_URL = 'https://api.github.com/user'
 GITHUB_EMAILS_URL = 'https://api.github.com/user/emails'
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
