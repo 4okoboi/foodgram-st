@@ -135,7 +135,7 @@ class GitHubOAuthTokenLoginView(APIView):
 
         user_resp = requests.get(
             "https://api.github.com/user",
-            headers={"Authorization": f"token {access_token}"},
+            headers={"Authorization": f"Bearer {access_token}"},
         )
         user_data = user_resp.json()
         
@@ -146,7 +146,7 @@ class GitHubOAuthTokenLoginView(APIView):
         if not email:
             email_resp = requests.get(
                 "https://api.github.com/user/emails",
-                headers={"Authorization": f"token {access_token}"},
+                headers={"Authorization": f"Bearer {access_token}"},
             )
             emails = email_resp.json()
             print(emails)
