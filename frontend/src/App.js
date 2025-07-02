@@ -101,7 +101,6 @@ function App() {
           .then((res) => {
             setUser(res);
             setLoggedIn(true);
-            getOrders();
           })
           .catch((err) => {
             setLoggedIn(false);
