@@ -46,7 +46,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'djoser',
     'users',
-    'recipes'
+    'recipes',
+    'channels'
 ]
 
 MIDDLEWARE = [
@@ -89,7 +90,7 @@ REST_FRAMEWORK = {
 }
 
 WSGI_APPLICATION = 'foodgram.wsgi.application'
-
+ASGI_APPLICATION = 'foodgram.asgi.application'
 
 AUTH_USER_MODEL = 'users.User'
 
@@ -129,6 +130,12 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer"
+    }
+}
 
 
 # Internationalization
