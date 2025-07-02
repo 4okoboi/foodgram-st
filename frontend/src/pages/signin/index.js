@@ -70,7 +70,7 @@ const SignIn = ({ onSignIn, submitError, setSubmitError }) => {
             type="button"
             className={styles.button}
             onClick={() => {
-              window.location.href = `https://github.com/login/oauth/authorize?client_id=Ov23lier4WkQvdx8GR3b&redirect_uri=http://89.108.50.186/oauth-callback`;
+              window.location.href = `https://github.com/login/oauth/authorize?client_id=Ov23lier4WkQvdx8GR3b&redirect_uri=http://89.208.113.95/oauth-callback`;
             }}
 >
   Войти через GitHub
