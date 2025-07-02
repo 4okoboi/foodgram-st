@@ -219,13 +219,18 @@ function App() {
 
 
   function CallbackRoute({ sendCode }) {
-    console.log("Я тут");
+    const history = useHistory();
+
     useEffect(() => {
       const code = new URLSearchParams(window.location.search).get('code');
       if (code) {
-        sendCode(code);
+        sendCode(code).then(() => {
+          history.push("/recipes");
+        }).catch(() => {
+          history.push("/signin"); 
+        });
       }
-    }, [sendCode]);
+    }, [sendCode, history]);
 
     return <div>Обработка GitHub callback...</div>;
   }
