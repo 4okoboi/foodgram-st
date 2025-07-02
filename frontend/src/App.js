@@ -91,8 +91,8 @@ function App() {
       });
   };
 
-  const sendGithubCode = (code) => {
-    return api
+  const sendGithubCode = (code, history) => {
+    api
     .sendGithubCode({ code })
     .then((res) => {
       if (res.auth_token) {
@@ -224,7 +224,7 @@ function App() {
     useEffect(() => {
       const code = new URLSearchParams(window.location.search).get('code');
       if (code) {
-        sendCode(code).then(() => {
+        sendCode(code, history).then(() => {
           history.push("/recipes");
         }).catch(() => {
           history.push("/signin"); 
