@@ -112,6 +112,7 @@ class SetPasswordView(APIView):
 User = get_user_model()
 
 class GitHubOAuthTokenLoginView(APIView):
+    permission_classes = [AllowAny]
     def post(self, request):
         code = request.data.get("code")
         if not code:
