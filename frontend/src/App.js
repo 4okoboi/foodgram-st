@@ -231,7 +231,7 @@ function App() {
           history.push("/signin"); 
         });
       }
-    }, [sendCode, history]);
+    }, [sendCode]);
 
     return <div>Обработка GitHub callback...</div>;
   }
