@@ -10,4 +10,4 @@ RUN pip install -r requirements.txt --no-cache-dir
 
 COPY . .
 CMD ["python", "manage.py", "collectstatic"]
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "foodgram.asgi:application"]
+CMD ["uvicorn", "foodgram.asgi:application", "--host", "0.0.0.0", "--port", "8000"]
