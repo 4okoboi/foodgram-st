@@ -219,15 +219,38 @@ function App() {
 
 
   function CallbackRoute({ sendCode }) {
-    console.log("Я тут");
-    useEffect(() => {
-      const code = new URLSearchParams(window.location.search).get('code');
-      if (code) {
-        sendCode(code);
-      }
-    }, [sendCode]);
+    const history = useHistory();
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
-    return <div>Обработка GitHub callback...</div>;
+    useEffect(() => {
+      const code = new URLSearchParams(window.location.search).get("code");
+      if (code) {
+        sendCode(code)
+          .then(() => {
+            setLoading(false);
+            // Здесь можно сделать редирект на нужную страницу, например:
+            history.push("/recipes");
+          })
+          .catch((err) => {
+            setError("Ошибка при обработке авторизации");
+            setLoading(false);
+          });
+      } else {
+        setError("Код авторизации не найден");
+        setLoading(false);
+      }
+    }, [sendCode, history]);
+
+    if (loading) {
+      return <div>Обработка GitHub callback...</div>;
+    }
+
+    if (error) {
+      return <div style={{ color: "red" }}>{error}</div>;
+    }
+
+    return null; 
   }
 
 
