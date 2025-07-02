@@ -219,6 +219,7 @@ function App() {
 
 
   function CallbackRoute({ sendCode }) {
+    console.log("Я тут");
     useEffect(() => {
       const code = new URLSearchParams(window.location.search).get('code');
       if (code) {
