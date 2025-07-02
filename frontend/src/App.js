@@ -334,7 +334,9 @@ function App() {
                 updateOrders={updateOrders}
               />
             </Route>
-            <Route exact path="/oauth-callback" render={() => <CallbackRoute sendCode={sendGithubCode} />} />
+            <Route exact path="/oauth-callback">
+              <CallbackRoute sendCode={sendGithubCode} />
+            </Route>
             <Route exact path="/about">
               <NotFound />
               {/* <About component={About} /> */}
