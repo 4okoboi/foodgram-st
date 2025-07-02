@@ -220,7 +220,7 @@ function App() {
 
   function CallbackRoute({ sendCode }) {
     const history = useHistory();
-
+    console.log("fdsfadsfas");
     useEffect(() => {
       const code = new URLSearchParams(window.location.search).get('code');
       if (code) {
