@@ -138,6 +138,8 @@ class GitHubOAuthTokenLoginView(APIView):
             headers={"Authorization": f"token {access_token}"},
         )
         user_data = user_resp.json()
+        
+        print(user_data)
 
         email = user_data.get("email")
 
@@ -147,6 +149,7 @@ class GitHubOAuthTokenLoginView(APIView):
                 headers={"Authorization": f"token {access_token}"},
             )
             emails = email_resp.json()
+            print(emails)
             email = next((e["email"] for e in emails if e.get("primary")), None)
 
         if not email:
