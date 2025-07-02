@@ -97,10 +97,11 @@ function App() {
     .then((res) => {
       if (res.auth_token) {
         localStorage.setItem("token", res.auth_token);
-        return api.getUserData()
+        api.getUserData()
           .then((res) => {
             setUser(res);
             setLoggedIn(true);
+            history.push("/");
           })
           .catch((err) => {
             setLoggedIn(false);
@@ -224,11 +225,7 @@ function App() {
     useEffect(() => {
       const code = new URLSearchParams(window.location.search).get('code');
       if (code) {
-        sendCode(code, history).then(() => {
-          history.push("/recipes");
-        }).catch(() => {
-          history.push("/signin"); 
-        });
+        sendCode(code, history)
       }
     }, []);
 
