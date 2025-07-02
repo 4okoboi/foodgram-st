@@ -230,7 +230,7 @@ function App() {
           history.push("/signin"); 
         });
       }
-    }, [sendCode]);
+    });
 
     return <div>Обработка GitHub callback...</div>;
   }
