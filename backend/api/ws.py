@@ -29,7 +29,6 @@ class OnlineUsersConsumer(AsyncWebsocketConsumer):
 
     async def update_user_count(self, event):
         await self.send(text_data=json.dumps({
-            "users_online": event["total"]
+            "type": "update_user_count",
+            "total": event["total"]
         }))
-
-

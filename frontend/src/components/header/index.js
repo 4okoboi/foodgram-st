@@ -6,7 +6,6 @@ import LogoHeader from '../../images/logo-header.png'
 
 const Header = ({ loggedIn, onSignOut, orders }) => {
   const [onlineUsers, setOnlineUsers] = useState(0)
-  const [recipeCount, setRecipeCount] = useState(0)
 
   useEffect(() => {
     const usersSocket = new WebSocket(`ws://89.208.113.95/ws/users/`)
