@@ -30,9 +30,10 @@ jobs:
           --health-retries 5
 
     env:
-      POSTGRES_DB: app_db
-      POSTGRES_USER: app_user
-      POSTGRES_PASSWORD: secret
+      DJANGO_SETTINGS_MODULE: foodgram.settings
+      POSTGRES_DB: testdb
+      POSTGRES_USER: testuser
+      POSTGRES_PASSWORD: testpass
       DB_HOST: localhost
       DB_PORT: 5432
 
