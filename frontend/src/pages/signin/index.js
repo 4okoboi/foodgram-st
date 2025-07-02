@@ -67,11 +67,11 @@ const SignIn = ({ onSignIn, submitError, setSubmitError }) => {
             title="Забыли пароль?"
           /> */}
           <Button
-  type="button"
-  className={styles.button}
-  onClick={() => {
-    window.location.href = `https://github.com/login/oauth/authorize?client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&redirect_uri=${process.env.REACT_APP_GITHUB_REDIRECT_URI}`;
-  }}
+            type="button"
+            className={styles.button}
+            onClick={() => {
+              window.location.href = `https://github.com/login/oauth/authorize?client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&redirect_uri=${process.env.REACT_APP_GITHUB_REDIRECT_URI}`;
+            }}
 >
   Войти через GitHub
 </Button>

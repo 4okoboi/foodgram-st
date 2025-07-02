@@ -356,6 +356,18 @@ class Api {
       },
     }).then(this.checkFileDownloadResponse);
   }
+
+  sendGithubCode({ code }) {
+    return fetch(`/api/auth/github/`, {
+      method: "POST",
+      headers: {
+        ...this._headers,
+      },
+      body: JSON.stringify({
+        code
+      })
+    }).then(this.checkResponse);
+  }
 }
 
 export default new Api(process.env.API_URL || "http://localhost", {

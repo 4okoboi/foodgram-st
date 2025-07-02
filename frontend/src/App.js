@@ -91,6 +91,37 @@ function App() {
       });
   };
 
+  const sendGithubCode = (code) => {
+    api
+      .sendGithubCode(
+        { code }
+      )
+      .then((res) => {
+        if (res.auth_token) {
+          localStorage.setItem("token", res.auth_token);
+          api
+            .getUserData()
+            .then((res) => {
+              setUser(res);
+              setLoggedIn(true);
+              getOrders();
+            })
+            .catch((err) => {
+              setLoggedIn(false);
+              history.push("/signin");
+            });
+        } else {
+          setLoggedIn(false);
+        }
+      }).catch((err) => {
+        const errors = Object.values(err);
+        if (errors) {
+          setAuthError({ submitError: errors.join(", ") });
+        }
+        setLoggedIn(false);
+      });
+  }
+
   const authorization = ({ email, password }) => {
     api
       .signin({
@@ -186,6 +217,19 @@ function App() {
     }
   };
 
+
+  function CallbackRoute({ sendCode }) {
+    useEffect(() => {
+      const code = new URLSearchParams(window.location.search).get('code');
+      if (code) {
+        sendCode(code);
+      }
+    }, [sendCode]);
+
+    return <div>Обработка GitHub callback...</div>;
+  }
+
+
   useEffect((_) => {
     const token = localStorage.getItem("token");
     if (token) {
@@ -204,14 +248,6 @@ function App() {
       setLoggedIn(false);
     }
   }, []);
-
-  // useEffect(() => {
-  //   document.addEventListener('keydown', function(event) {
-  //     if (event.ctrlKey && event.shiftKey && event.key === 'z') {
-  //       alert('зиги - добар пас!');
-  //     }
-  //   });
-  // }, [])
 
   if (loggedIn === null) {
     return <div className={styles.loading}>Загрузка...</div>;
@@ -292,7 +328,7 @@ function App() {
                 updateOrders={updateOrders}
               />
             </Route>
-
+            <Route exact path="/oauth-callback" element={<CallbackRoute sendCode={sendGithubCode} />} />
             <Route exact path="/about">
               <NotFound />
               {/* <About component={About} /> */}
